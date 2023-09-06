@@ -4,21 +4,17 @@ using UnityEngine;
 using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
-    
-    public static bool simulateMouseWithTouches = true;
+   public float minX = -5f; // Límite mínimo en el eje X
+    public float maxX = 5f;  // Límite máximo en el eje X
+
     void Update()
     {
-        Input.simulateMouseWithTouches = true;
-        if (Input.touchCount > 0)
+        if (Input.GetMouseButton(0))
         {
-            Touch touch = Input.GetTouch(0);
-
-            // Update the Text on the screen depending on current position of the touch each frame
-            Debug.Log("Touch Position : " + touch.position);
-        }
-        else
-        {
-            Debug.Log("no");
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 newPosition = transform.position;
+            newPosition.x = Mathf.Clamp(mousePosition.x, minX, maxX); // Aplica límites en el eje X
+            transform.position = newPosition;
         }
     }
 }

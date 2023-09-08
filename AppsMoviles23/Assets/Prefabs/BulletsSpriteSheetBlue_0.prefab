@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3732315526440391672}
   - component: {fileID: 3732315526440391673}
   - component: {fileID: 3732315526440391670}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: BulletsSpriteSheetBlue_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

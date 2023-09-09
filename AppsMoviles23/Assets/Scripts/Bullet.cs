@@ -8,6 +8,7 @@ public GameObject splashEndPrefab, smallBulletPrefab;
     private Rigidbody2D _rigidbody;
   	private bool _isTouching;
 
+	
     public LayerMask groundLayer;
 	public float groundCheckRadius;
 	public float speed = 2f;
@@ -15,7 +16,7 @@ public GameObject splashEndPrefab, smallBulletPrefab;
 	public float livingTime = 3f;
 	public Color initialColor = Color.white;
 	public Color finalColor;
-	public float damage;
+	public int damage = 1;
 
 	private SpriteRenderer _renderer;
 	private float _startingTime;
@@ -53,19 +54,19 @@ public GameObject splashEndPrefab, smallBulletPrefab;
 		_renderer.color = Color.Lerp(initialColor, finalColor, _percentageCompleted);*/
 		
     }
-	/*public void OnTriggerEnter2D(Collider2D collision)
+
+	void OnCollisionEnter2D(Collision2D collision)
     {
-			
-            HealthEnemy health = collision.GetComponent<HealthEnemy>();
-			 if (health == null)
-    		{
-       			 return;
-   			 }
-			else{
-				health.TakeDamage(damage);
-            	DestroyBullet();
-			}
-    }*/
+        EnemyDefault enemy = collision.gameObject.GetComponent<EnemyDefault>();
+
+        if (enemy != null)
+        {
+            enemy.TakeDamage(damage);
+			DestroyBullet();
+        }
+
+       
+    }
 	void DestroyBullet(){
 		//Instantiate (splashEndPrefab, transform.position, Quaternion.identity);
 		Destroy(this.gameObject);

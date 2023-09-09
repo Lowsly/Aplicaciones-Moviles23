@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     public GameObject bulletPrefab;
@@ -14,9 +13,11 @@ public class Player : MonoBehaviour
     private Vector3 playerPosition;
     private bool isTouchingScreen = false;
 
-    public float _cdShoot = 1f,_shootDelay =0.15f;
+    private float _cdShoot = 1f,_shootDelay =0.15f;
 
-    Transform fire;
+    private int _money;
+
+    public TextMeshProUGUI text;
 
     private void Start()
     {
@@ -24,33 +25,30 @@ public class Player : MonoBehaviour
         playerPosition = transform.position;
         _firePoint = transform.Find("firepoint");
         Application.targetFrameRate = 60;
+        _money = 0;
     }
 
     private void Update()
     {
+        text.text = string.Format("dinero = {0}", _money);
         if (Input.GetMouseButton(0))
         {
             isTouchingScreen = true;
 
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            // Calcular la dirección del movimiento
             float moveDirection = Mathf.Sign(mousePosition.x - playerPosition.x);
 
-            // Calcular la diferencia entre las posiciones del jugador y el mouse
             float positionDifference = Mathf.Abs(mousePosition.x - playerPosition.x);
 
-            // Aplicar aceleración gradual cuando el mouse está cerca
             float adjustedSpeed = Mathf.Lerp(0f, moveSpeed, positionDifference / alignmentThreshold);
 
-            // Establecer la velocidad
             rb.velocity = new Vector2(adjustedSpeed * moveDirection, 0f);
 
-            playerPosition = transform.position; // Actualizar la posición del jugador
+            playerPosition = transform.position; 
         }
         else
         {
-            // Si no se toca la pantalla, detener el movimiento instantáneamente
             if (!isTouchingScreen)
             {
                 rb.velocity = Vector2.zero;
@@ -64,7 +62,7 @@ public class Player : MonoBehaviour
 		
 
     }
-     public void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         currentHealth -= damage;
 
@@ -72,5 +70,11 @@ public class Player : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void Money(int cash)
+    {
+        _money+=cash;
+        
     }
 }

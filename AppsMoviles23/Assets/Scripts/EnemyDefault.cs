@@ -30,14 +30,47 @@ public class EnemyDefault : MonoBehaviour
         }
     }
     void Destroy()
+{
+    float totalWeight = 0f;
+
+    foreach (GameObject obj in objectsToSpawn)
     {
-        int randomValue = Random.Range(0, objectsToSpawn.Length);
-        if (randomValue >= 0 && randomValue < objectsToSpawn.Length)
+        Coin weightedObject = obj.GetComponent<Coin>();
+        if (weightedObject != null)
         {
-            Instantiate(objectsToSpawn[randomValue], transform.position, Quaternion.identity);
+            totalWeight += weightedObject.weight;
         }
-        Destroy(this.gameObject);
     }
+
+    float randomValue = Random.Range(0f, totalWeight);
+
+    foreach (GameObject obj in objectsToSpawn)
+    {
+        Coin weightedObject = obj.GetComponent<Coin>();
+        if (weightedObject != null)
+        {
+            if (randomValue <= weightedObject.weight)
+            {
+                Instantiate(obj, transform.position, Quaternion.identity);
+                break; 
+            }
+
+            randomValue -= weightedObject.weight;
+        }
+        else
+        {
+            if (randomValue <= 1f)
+            {
+                Instantiate(obj, transform.position, Quaternion.identity);
+                break; 
+            }
+
+            randomValue -= 1f;
+        }
+    }
+
+    Destroy(this.gameObject);
+}
 
     void Destroytotal()
     {

@@ -16,7 +16,7 @@ public GameObject splashEndPrefab, smallBulletPrefab;
 	public float livingTime = 3f;
 	public Color initialColor = Color.white;
 	public Color finalColor;
-	public int damage = 1;
+	public int damage = 10;
 
 	private SpriteRenderer _renderer;
 	private float _startingTime;

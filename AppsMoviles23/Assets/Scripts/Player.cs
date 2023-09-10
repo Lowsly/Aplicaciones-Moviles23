@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     private Vector3 playerPosition;
     private bool isTouchingScreen = false;
 
-    private float _cdShoot = 1f,_shootDelay =0.15f;
+    private float _cdShoot = 0.1f,_shootDelay =0.15f;
 
     private int _money;
 
@@ -58,6 +58,7 @@ public class Player : MonoBehaviour
         if (Time.time > _cdShoot){
             _cdShoot = _shootDelay + Time.time;
             var fired = Instantiate(bulletPrefab, _firePoint.position, Quaternion.identity);
+
         }
 		
 

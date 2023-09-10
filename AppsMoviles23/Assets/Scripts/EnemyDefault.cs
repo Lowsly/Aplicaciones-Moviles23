@@ -9,6 +9,8 @@ public class EnemyDefault : MonoBehaviour
 
     public int currentHealth = 100;
 
+    public float weightOfNothing = 10f, luckFactor = 1;
+
 
     void Start()
     {
@@ -29,10 +31,12 @@ public class EnemyDefault : MonoBehaviour
             Destroy();
         }
     }
-    void Destroy()
+   void Destroy()
 {
+   
     float totalWeight = 0f;
 
+    // Calcula el peso total
     foreach (GameObject obj in objectsToSpawn)
     {
         Coin weightedObject = obj.GetComponent<Coin>();
@@ -42,36 +46,39 @@ public class EnemyDefault : MonoBehaviour
         }
     }
 
+    totalWeight += weightOfNothing; // Agregar el peso de la opción "nada"
+
     float randomValue = Random.Range(0f, totalWeight);
+
+    // Verificar si se selecciona la opción "nada"
+    if (randomValue <= weightOfNothing)
+    {
+        // No hagas nada, simplemente destruye este objeto
+        Destroy(this.gameObject);
+        return; // Salir de la función para evitar la instanciación de objetos
+    }
 
     foreach (GameObject obj in objectsToSpawn)
     {
         Coin weightedObject = obj.GetComponent<Coin>();
         if (weightedObject != null)
         {
-            if (randomValue <= weightedObject.weight)
+            // Afecta las probabilidades utilizando el "luck factor"
+            float adjustedWeight = weightedObject.weight * (1f - luckFactor);
+
+            if (randomValue <= (adjustedWeight + weightOfNothing))
             {
+                // Clonar el objeto
                 Instantiate(obj, transform.position, Quaternion.identity);
-                break; 
+                break;
             }
 
-            randomValue -= weightedObject.weight;
-        }
-        else
-        {
-            if (randomValue <= 1f)
-            {
-                Instantiate(obj, transform.position, Quaternion.identity);
-                break; 
-            }
-
-            randomValue -= 1f;
+            randomValue -= (adjustedWeight + weightOfNothing);
         }
     }
 
     Destroy(this.gameObject);
 }
-
     void Destroytotal()
     {
         Destroy(this.gameObject);

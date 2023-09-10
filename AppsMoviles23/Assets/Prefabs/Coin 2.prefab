@@ -121,7 +121,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   value: 1
-  weight: 1
+  weight: 4
+  appearanceProbability: 2
 --- !u!50 &430345796189918909
 Rigidbody2D:
   serializedVersion: 4

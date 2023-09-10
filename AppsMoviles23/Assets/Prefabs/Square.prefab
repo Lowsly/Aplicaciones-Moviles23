@@ -150,7 +150,8 @@ MonoBehaviour:
   - {fileID: 9153425166591721342, guid: 8918a2f17961faf4f8045d52d2b77a65, type: 3}
   - {fileID: 9153425166591721342, guid: 4f2afedc8011e3942bda49b56f56a5ce, type: 3}
   - {fileID: 9153425166591721342, guid: 46fcb5f5de794964b810b093a2a2a0ea, type: 3}
-  moveSpeed: 5
+  moveSpeed: 3
   currentHealth: 3
-  weightOfNothing: 70
-  luckFactor: 0.5
+  luckFactor: 0
+  weightOfNothing: 50
+  appearanceProbabilityOfNothing: 20

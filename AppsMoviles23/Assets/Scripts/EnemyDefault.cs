@@ -9,7 +9,10 @@ public class EnemyDefault : MonoBehaviour
 
     public int currentHealth = 100;
 
-    public float weightOfNothing = 10f, luckFactor = 1;
+    public float  luckFactor = 1;
+    public float weightOfNothing = 10f;
+
+    public float appearanceProbabilityOfNothing = 20f;
 
 
     void Start()
@@ -31,27 +34,26 @@ public class EnemyDefault : MonoBehaviour
             Destroy();
         }
     }
-   void Destroy()
-{
-   
-    float totalWeight = 0f;
 
-    // Calcula el peso total
+void Destroy()
+{
+    
+    float totalProbability = 0f;
+
+    // Calcular la suma total de las probabilidades de aparición
     foreach (GameObject obj in objectsToSpawn)
     {
-        Coin weightedObject = obj.GetComponent<Coin>();
-        if (weightedObject != null)
+        Coin coin = obj.GetComponent<Coin>();
+        if (coin != null)
         {
-            totalWeight += weightedObject.weight;
+            totalProbability += coin.appearanceProbability;
         }
     }
 
-    totalWeight += weightOfNothing; // Agregar el peso de la opción "nada"
-
-    float randomValue = Random.Range(0f, totalWeight);
+    float randomValue = Random.Range(0f, 100f); // Usar rango de 0 a 100 para porcentajes
 
     // Verificar si se selecciona la opción "nada"
-    if (randomValue <= weightOfNothing)
+    if (randomValue <= appearanceProbabilityOfNothing)
     {
         // No hagas nada, simplemente destruye este objeto
         Destroy(this.gameObject);
@@ -60,26 +62,25 @@ public class EnemyDefault : MonoBehaviour
 
     foreach (GameObject obj in objectsToSpawn)
     {
-        Coin weightedObject = obj.GetComponent<Coin>();
-        if (weightedObject != null)
+        Coin coin = obj.GetComponent<Coin>();
+        if (coin != null)
         {
-            // Afecta las probabilidades utilizando el "luck factor"
-            float adjustedWeight = weightedObject.weight * (1f - luckFactor);
-
-            if (randomValue <= (adjustedWeight + weightOfNothing))
+            // Verificar si el objeto debe aparecer
+            if (randomValue <= coin.appearanceProbability)
             {
                 // Clonar el objeto
                 Instantiate(obj, transform.position, Quaternion.identity);
                 break;
             }
 
-            randomValue -= (adjustedWeight + weightOfNothing);
+            // Restar la probabilidad del objeto actual
+            randomValue -= coin.appearanceProbability;
         }
     }
 
     Destroy(this.gameObject);
 }
-    void Destroytotal()
+void Destroytotal()
     {
         Destroy(this.gameObject);
     }

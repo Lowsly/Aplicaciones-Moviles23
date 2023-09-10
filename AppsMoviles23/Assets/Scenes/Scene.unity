@@ -155,7 +155,7 @@ MonoBehaviour:
   prefabToSpawn: {fileID: 4278064914889142801, guid: 891ab8ddca832734c9b2011f7f2895d5, type: 3}
   numberOfObjectsToSpawn: 5
   spacing: 1
-  spawnInterval: 0.5
+  spawnInterval: 2
 --- !u!4 &655672481
 Transform:
   m_ObjectHideFlags: 0

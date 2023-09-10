@@ -6,7 +6,11 @@ public class Coin : MonoBehaviour
 {
     public int value;
 
-    public float weight; 
+    public float weight;
+
+    public float appearanceProbability; 
+
+    
     void Start()
     {
         Rigidbody2D rb = GetComponent<Rigidbody2D>();

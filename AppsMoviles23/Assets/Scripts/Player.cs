@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     private int _money;
 
     public TextMeshProUGUI text;
-
+    public AudioSource coinSound;
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -77,5 +77,11 @@ public class Player : MonoBehaviour
     {
         _money+=cash;
         
+          Debug.Log("Moneda recogida, dinero: " + _money);
+
+        if (coinSound != null)
+        {
+            coinSound.Play();
+        }
     }
 }

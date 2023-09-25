@@ -19,6 +19,10 @@ public class Player : MonoBehaviour
 
     public TextMeshProUGUI text;
     public AudioSource coinSound;
+
+
+    private bool isMoving = false; // Variable para rastrear si el objeto está en movimiento
+    private Vector3 targetPosition; 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -33,28 +37,27 @@ public class Player : MonoBehaviour
         text.text = string.Format("dinero = {0}", _money);
         if (Input.GetMouseButton(0))
         {
-            isTouchingScreen = true;
+            // Comienza a mover el objeto cuando se presiona el botón izquierdo del mouse
+            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
+            Vector2 newPosition = Vector2.MoveTowards(currentPosition, mousePosition, moveSpeed * Time.deltaTime);
+            
+            // Mantén la misma coordenada z
+            newPosition.y = transform.position.y;
 
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            float moveDirection = Mathf.Sign(mousePosition.x - playerPosition.x);
-
-            float positionDifference = Mathf.Abs(mousePosition.x - playerPosition.x);
-
-            float adjustedSpeed = Mathf.Lerp(0f, moveSpeed, positionDifference / alignmentThreshold);
-
-            rb.velocity = new Vector2(adjustedSpeed * moveDirection, 0f);
-
-            playerPosition = transform.position; 
+            // Aplica la nueva posición
+            transform.position = newPosition;
+            isMoving = true;
         }
-        else
+        if (Input.GetMouseButton(0) == false)
         {
-            if (!isTouchingScreen)
-            {
-                rb.velocity = Vector2.zero;
-            }
-            isTouchingScreen = false;
+            
+            transform.position = new Vector2(transform.position.x, transform.position.y);
+            
+            
         }
+
+        
         if (Time.time > _cdShoot){
             _cdShoot = _shootDelay + Time.time;
             var fired = Instantiate(bulletPrefab, _firePoint.position, Quaternion.identity);

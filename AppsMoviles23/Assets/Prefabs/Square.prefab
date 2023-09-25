@@ -153,5 +153,5 @@ MonoBehaviour:
   moveSpeed: 3
   currentHealth: 3
   luckFactor: 0
-  weightOfNothing: 50
+  weightOfNothing: 30
   appearanceProbabilityOfNothing: 20

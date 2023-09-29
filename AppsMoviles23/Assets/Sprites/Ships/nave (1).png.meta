@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: b6c036fc2079ddd4fb3278d8a58c89e8
+guid: 6ae12cb7a9af75a469ddaa3f239ca4fc
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -141,13 +141,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Weapons2_0
+      name: nave (1)_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
-        width: 128
-        height: 128
+        y: 100
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -155,20 +155,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 988cbc6acf32b6b4fbd128607097b7f1
-      internalID: -1466903995
+      spriteID: 9829744c7ec207548a79882fb2e652c4
+      internalID: 2139432433
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Weapons2_1
+      name: nave (1)_1
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 128
-        height: 128
+        x: 100
+        y: 100
+        width: 100
+        height: 100
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -176,8 +176,50 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b57016374e398ba46b85105e492d5766
-      internalID: -1334308127
+      spriteID: cf0379334b239da4b9fb7ebf2be2e70b
+      internalID: -1216280939
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nave (1)_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4a7b0509c8ae734b925a65ab6e88676
+      internalID: -2079063404
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nave (1)_3
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 0
+        width: 100
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 37dbb803480c047419da79d9f457ff7a
+      internalID: 1502360865
       vertices: []
       indices: 
       edges: []
@@ -193,8 +235,10 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Weapons2_1: -1334308127
-      Weapons2_0: -1466903995
+      nave (1)_0: 2139432433
+      nave (1)_1: -1216280939
+      nave (1)_3: 1502360865
+      nave (1)_2: -2079063404
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

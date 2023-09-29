@@ -38,16 +38,15 @@ public class Player : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             // Comienza a mover el objeto cuando se presiona el botón izquierdo del mouse
-            Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector2 currentPosition = new Vector2(transform.position.x, transform.position.y);
-            Vector2 newPosition = Vector2.MoveTowards(currentPosition, mousePosition, moveSpeed * Time.deltaTime);
-            
+           Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
             // Mantén la misma coordenada z
-            newPosition.y = transform.position.y;
+            mousePosition.y = transform.position.y;
+
+            // Mueve el objeto solo en el eje X hacia la posición del mouse
+            transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed * Time.deltaTime);
 
             // Aplica la nueva posición
-            transform.position = newPosition;
-            isMoving = true;
         }
         if (Input.GetMouseButton(0) == false)
         {

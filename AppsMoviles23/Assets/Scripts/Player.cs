@@ -1,33 +1,28 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 public class Player : MonoBehaviour
 {
-    public GameObject bulletPrefab;
-    private Transform _firePoint;
-    public float moveSpeed, alignmentThreshold = 0.1f; 
+    public MainMenu mainMenu;
+    public float moveSpeed; 
 
     public int currentHealth = 3;
 
     private Rigidbody2D rb;
     private Vector3 playerPosition;
-    private bool isTouchingScreen = false;
-
-    private float _cdShoot = 0.1f,_shootDelay =0.15f;
-
     private int _money;
 
     public TextMeshProUGUI text;
     public AudioSource coinSound;
 
+bool isMousePressed = false; 
+    public GameObject nonSafeArea;
 
-    private bool isMoving = false; // Variable para rastrear si el objeto está en movimiento
-    private Vector3 targetPosition; 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         playerPosition = transform.position;
-        _firePoint = transform.Find("firepoint");
         Application.targetFrameRate = 60;
         _money = 0;
     }
@@ -35,10 +30,10 @@ public class Player : MonoBehaviour
     private void Update()
     {
         text.text = string.Format("dinero = {0}", _money);
-        if (Input.GetMouseButton(0))
+         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        if (Input.GetMouseButton(0) == true && EventSystem.current.currentSelectedGameObject == null)
         {
             // Comienza a mover el objeto cuando se presiona el botón izquierdo del mouse
-           Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             // Mantén la misma coordenada z
             mousePosition.y = transform.position.y;
@@ -54,17 +49,10 @@ public class Player : MonoBehaviour
             transform.position = new Vector2(transform.position.x, transform.position.y);
             
             
-        }
-
+        }	
         
-        if (Time.time > _cdShoot){
-            _cdShoot = _shootDelay + Time.time;
-            var fired = Instantiate(bulletPrefab, _firePoint.position, Quaternion.identity);
-
         }
-		
-
-    }
+        
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
@@ -78,8 +66,6 @@ public class Player : MonoBehaviour
     public void Money(int cash)
     {
         _money+=cash;
-        
-          Debug.Log("Moneda recogida, dinero: " + _money);
 
         if (coinSound != null)
         {

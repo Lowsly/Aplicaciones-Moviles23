@@ -10,7 +10,6 @@ public class EnemyDefault : MonoBehaviour
     public int currentHealth = 100;
 
     public float  luckFactor = 1;
-    public float weightOfNothing = 10f;
 
     public float appearanceProbabilityOfNothing = 20f;
 
@@ -40,13 +39,13 @@ void Destroy()
     
     float totalProbability = 0f;
 
-    // Calcular la suma total de las probabilidades de aparición
+    
     foreach (GameObject obj in objectsToSpawn)
     {
-        Coin coin = obj.GetComponent<Coin>();
-        if (coin != null)
+        Probability prob = obj.GetComponent<Probability>();
+        if (prob != null)
         {
-            totalProbability += coin.appearanceProbability;
+            totalProbability += prob.appearanceProbability;
         }
     }
 
@@ -62,11 +61,11 @@ void Destroy()
 
     foreach (GameObject obj in objectsToSpawn)
     {
-        Coin coin = obj.GetComponent<Coin>();
-        if (coin != null)
+        Probability prob = obj.GetComponent<Probability>();
+        if (prob != null)
         {
             // Verificar si el objeto debe aparecer
-            if (randomValue <= coin.appearanceProbability)
+            if (randomValue <= prob.appearanceProbability)
             {
                 // Clonar el objeto
                 Instantiate(obj, transform.position, Quaternion.identity);
@@ -74,7 +73,7 @@ void Destroy()
             }
 
             // Restar la probabilidad del objeto actual
-            randomValue -= coin.appearanceProbability;
+            randomValue -= prob.appearanceProbability;
         }
     }
 

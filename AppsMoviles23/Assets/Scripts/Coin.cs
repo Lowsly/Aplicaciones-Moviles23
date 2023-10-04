@@ -5,11 +5,6 @@ using UnityEngine;
 public class Coin : MonoBehaviour
 {
     public int value;
-
-    public float weight;
-
-    public float appearanceProbability; 
-
     
     void Start()
     {
@@ -17,10 +12,6 @@ public class Coin : MonoBehaviour
         rb.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
     }
 
-    void Update()
-    {
-        
-    }
     void OnCollisionEnter2D(Collision2D collision)
     {
         Player player = collision.gameObject.GetComponent<Player>();

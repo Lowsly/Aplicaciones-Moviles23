@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3732315526440391670}
   - component: {fileID: 2236146154655071951}
   m_Layer: 3
-  m_Name: Gamm1
+  m_Name: Gamm2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: -900236165, guid: e9428e5475819104f8d16b5fb7d62958, type: 3}
+  m_Sprite: {fileID: 357064537, guid: e9428e5475819104f8d16b5fb7d62958, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -125,7 +125,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.14
+  m_Radius: 0.245
 --- !u!114 &3732315526440391670
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -149,7 +149,7 @@ MonoBehaviour:
   livingTime: 0
   initialColor: {r: 1, g: 1, b: 1, a: 1}
   finalColor: {r: 0, g: 0, b: 0, a: 0}
-  damage: 5
+  damage: 10
 --- !u!95 &2236146154655071951
 Animator:
   serializedVersion: 4
@@ -243,7 +243,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 731030720, guid: e9428e5475819104f8d16b5fb7d62958, type: 3}
+  m_Sprite: {fileID: 1461393374, guid: e9428e5475819104f8d16b5fb7d62958, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.43137255}
   m_FlipX: 0
   m_FlipY: 0

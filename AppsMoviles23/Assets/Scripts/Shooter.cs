@@ -35,11 +35,6 @@ public class Shooter : MonoBehaviour
 			currentAngle = -45;
 			angleStep = 90f / (_bullets - 1); 
 		}
-        if (Time.time > _cdShoot){
-            _cdShoot = _shootDelay + Time.time;
-            Shoot();
-
-        }
         
     }
 
@@ -56,45 +51,83 @@ public class Shooter : MonoBehaviour
             }
             if (power >= 5 && power <= 10)
             {
-                int bulletsToLeft = (power - 1) / 2;
-                int bulletsToRight = (power - 1) / 2;
-                int bulletsInMiddle = (power % 2 == 0) ? 2 : 1;
+                int bulletsToSide = (_bullets - 1) / 2;
+                int bulletsInMiddle = (_bullets % 2 == 0) ? 2 : 1;
 
                 // Disparar balas hacia la izquierda
-                for (int i = 0; i < bulletsToLeft; i++)
+                for (int i = 0; i < bulletsToSide; i++)
                 {
-                    float angle = currentAngle * -1;
-                    var firedBullet = Instantiate(bulletPrefab[0], firepoints[2].position, Quaternion.Euler(0, 0, angle));
-                    angle += angleStep;
+                    int angle = -25;
+                    var firedBullet = Instantiate(bulletPrefab[0], firepoints[2].position, Quaternion.Euler(0, 0, angle+i*4));
+                    angle += 7;
                 }
 
                 // Disparar balas en el medio
-                for (int i = 0; i < bulletsInMiddle; i++)
-                {
-                    float mid = (i % 3 == 0) ? 0 : 1;
-                    var firedBullet = Instantiate(bulletPrefab[0], firepoints[2].position + new Vector3(mid * (-0.05f + i * 0.05f), 0, 0), Quaternion.identity);
-                }
+                  for (int i = 0; i < bulletsInMiddle; i++)
+                    {
+                        float spacing = (bulletsInMiddle == 2) ? (i == 0 ? -0.08f : 0.08f) : 0.0f;
+                        var firedBullet = Instantiate(bulletPrefab[0], firepoints[2].position + new Vector3(spacing, 0, 0), Quaternion.identity);
+                    }
 
                 // Disparar balas hacia la derecha
-                for (int i = 0; i < bulletsToRight; i++)
+                for (int i = 0; i < bulletsToSide; i++)
                 {
-                    float angle = currentAngle;
-                    var firedBullet = Instantiate(bulletPrefab[0], firepoints[2].position, Quaternion.Euler(0, 0, angle));
-                    angle += angleStep;
+                    float angle = 25;
+                    var firedBullet = Instantiate(bulletPrefab[0], firepoints[2].position, Quaternion.Euler(0, 0, angle-i*4));
+                    angle -= 7;
                 }
             }
         }
-        if(power>=11 && power <=20){
-            _bullets = 1;
-            for (int i = 0; i < _bullets; i++)
-			{
-				var firedBullet = Instantiate(bulletPrefab[0], firepoints[2].position, Quaternion.Euler(0, 0, currentAngle));
-				currentAngle += angleStep;
-			}
-            var firedBullet1 = Instantiate(bulletPrefab[0], firepoints[1].position, Quaternion.identity);
-            var firedBullet2 = Instantiate(bulletPrefab[0], firepoints[3].position, Quaternion.identity);
+        if (power >= 11 && power <= 20)
+        {
+                        
+            if (power >= 11 && power <= 15)
+            {
+                _bullets = power;
+                int bulletsToMiddle = 3;
+                float spacingX = 0.15f; 
+
+                for (int i = 0; i < bulletsToMiddle; i++)
+                {
+                    float xOffset = (i - (bulletsToMiddle - 1) / 2) * spacingX;
+                    var bulletPrefabToUse = (i == (bulletsToMiddle - 1) / 2) ? bulletPrefab[1] : bulletPrefab[0];
+                    var firedBullet = Instantiate(bulletPrefabToUse, firepoints[2].position + new Vector3(xOffset, 0, 0), Quaternion.identity);
+                }
+
+                int bulletsToSide = (_bullets - bulletsToMiddle) / 2;
+
+                for (int i = 0; i < bulletsToSide; i++)
+                {
+                    float angle = -15;
+                    angle -= i * 4; 
+                    var firedBulletLeft = Instantiate(bulletPrefab[0], firepoints[1].position, Quaternion.Euler(0, 0, angle));
+                    var firedBulletRight = Instantiate(bulletPrefab[0], firepoints[3].position, Quaternion.Euler(0, 0, -angle));
+                }
+            }
+            if (power >= 15 && power <= 20)
+            {
+                _bullets = power - 4;
+
+                int bulletsToMiddle = _bullets/4; 
+                int bulletsToSide = (_bullets - bulletsToMiddle) / 2;
+
+                float spacingX = 0.15f; 
+
+                for (int i = 0; i < bulletsToMiddle; i++)
+                {
+                    float xOffset = (i - (bulletsToMiddle - 1) / 2) * spacingX;
+                    var firedBullet = Instantiate(bulletPrefab[1], firepoints[2].position + new Vector3(xOffset, 0, 0), Quaternion.identity);
+                }
+
+                for (int i = 0; i < bulletsToSide; i++)
+                {
+                    float angle = -15 - (i * 4);
+                    var bulletPrefabToUse = (i >= (bulletsToSide - 1) / 2) ? bulletPrefab[1] : bulletPrefab[0];
+                        var firedBulletLeft = Instantiate(bulletPrefabToUse, firepoints[1].position, Quaternion.Euler(0, 0, angle));
+                        var firedBulletRight = Instantiate(bulletPrefabToUse, firepoints[3].position, Quaternion.Euler(0, 0, -angle));
+                }
+            }   
         }
-        
     }
     public void Blip()
     {

@@ -10,7 +10,7 @@ public class Coin : MonoBehaviour
     {
         Rigidbody2D rb = GetComponent<Rigidbody2D>();
         rb.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
-        Invoke ("DestroyThis",1.5f);	
+        Invoke ("DestroyThis",5.5f);	
     }
 
     void OnCollisionEnter2D(Collision2D collision)

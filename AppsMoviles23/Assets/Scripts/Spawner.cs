@@ -16,16 +16,6 @@ public class Spawner : MonoBehaviour
 
     private void SpawnObject()
     {
-        // Calcula el rango en el que se instanciarán los objetos.
-        float minX = transform.position.x - (spacing * (numberOfObjectsToSpawn - 1)) / 2;
-        float maxX = transform.position.x + (spacing * (numberOfObjectsToSpawn - 1)) / 2;
-
-        // Itera para instanciar cada objeto en el rango.
-        for (int i = 0; i < numberOfObjectsToSpawn; i++)
-        {
-            float xPos = Mathf.Lerp(minX, maxX, (float)i / (numberOfObjectsToSpawn - 1));
-            Vector3 spawnPosition = new Vector3(xPos, transform.position.y, transform.position.z);
-            Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
-        }
+            Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
     }
 }

@@ -16,14 +16,10 @@ public class EnemyDefault : MonoBehaviour
 
     void Start()
     {
-        Invoke("Destroytotal",4.5f);
+        Invoke("Destroytotal",10.5f);
     }
 
-    void Update()
-    {
-        Vector3 movement = Vector3.down * moveSpeed * Time.deltaTime;
-        transform.Translate(movement);
-    }
+   
    
     public void TakeDamage(int damage)
     {

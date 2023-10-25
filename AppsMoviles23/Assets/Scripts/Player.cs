@@ -16,8 +16,9 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI text;
     public AudioSource coinSound;
 
+    public Collider2D backgroundCollider;
+
 bool isMousePressed = false; 
-    public GameObject nonSafeArea;
 
     private void Start()
     {
@@ -31,12 +32,9 @@ bool isMousePressed = false;
     {
         text.text = string.Format("dinero = {0}", _money);
          Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        if (Input.GetMouseButton(0) == true && EventSystem.current.currentSelectedGameObject == null)
+        if (Input.GetMouseButton(0) == true && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition))
         {
             // Comienza a mover el objeto cuando se presiona el botón izquierdo del mouse
-
-            // Mantén la misma coordenada z
-            mousePosition.y = transform.position.y;
 
             // Mueve el objeto solo en el eje X hacia la posición del mouse
             transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed * Time.deltaTime);

@@ -68,7 +68,6 @@ public GameObject splashEndPrefab, smallBulletPrefab;
        
     }
 	void DestroyBullet(){
-		//Instantiate (splashEndPrefab, transform.position, Quaternion.identity);
 		Destroy(this.gameObject);
 	}
 	

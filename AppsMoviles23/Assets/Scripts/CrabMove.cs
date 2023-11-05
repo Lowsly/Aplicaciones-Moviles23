@@ -4,33 +4,43 @@ using UnityEngine;
 
 public class CrabMove : MonoBehaviour
 {
-    public GameObject background;
+    private GameObject background;
+
+    private Background _background;
     private GameObject player;
-    private Vector2 playerPosition;
-    private float _bh, _bw;
+    private Vector2 playerPosition, actualplayerPosition;
+    private float _bh, _bw, difficult;
     void Start()
     {
+        background = GameObject.FindGameObjectWithTag("Background");
         _bh = background.transform.localScale.y;
         _bw = background.transform.localScale.x;
         player = GameObject.FindGameObjectWithTag("Player");
+        _background = background.GetComponent<Background>();
         playerPosition = player.transform.position;
     }
 
+    void Update()
+    {
+        player = GameObject.FindGameObjectWithTag("Player");
+        difficult = _background.difficulty;
+        actualplayerPosition = player.transform.position;
+    }
    public IEnumerator Move1()
     {
-        
+   
         float time = 2f;
         float timer = time/3;
         while (timer < time)
         {
-            transform.position = Vector2.MoveTowards(transform.position, playerPosition, 3*time * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, playerPosition, (difficult/2 + 3*time) * Time.deltaTime);
             timer += Time.deltaTime;
             yield return null;
         }
         timer = 0;
         while (timer < time)
         {
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,_bh-_bh*2.2f), 2*time * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,_bh-_bh*2.2f), (difficult + 2*time) * Time.deltaTime);
             timer += Time.deltaTime;
             yield return null;
         }
@@ -42,7 +52,7 @@ public class CrabMove : MonoBehaviour
         float timer = 0;
         while (timer < time)
         {
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,-_bh*3.2f), 5*time * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,-_bh*3.2f), (difficult*2 + 5*time) * Time.deltaTime);
             timer += Time.deltaTime;
             yield return null;
         }
@@ -52,22 +62,26 @@ public class CrabMove : MonoBehaviour
         float time = 2f;
         float timer = 0;
         bool x = false;
-        while (timer < time && x == false)
+        float random = Random.Range(0.05f+difficult/10,0.15f+difficult/10);
+        
+        while (timer < 8 && x == false)
         {
             timer += Time.deltaTime;
-            
-                transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,-_bh*3.2f), 5*time * Time.deltaTime);
-                x = (transform.position.y+0.06 >= playerPosition.y && transform.position.y-0.06 <= playerPosition.y) ? true : false;
+            float randomPos = Random.Range(0,10+difficult);
+        Vector2 actualPos = (randomPos<9) ? actualplayerPosition : playerPosition;
+                transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,-_bh*3.2f), (1.4f*time + difficult/2) * Time.deltaTime);
+                x = Mathf.Abs(transform.position.y - actualPos.y) <= random;
                 yield return null;
         }
-        int num = (playerPosition.x-transform.position.x>=0) ? 1 : -1;
-        while (timer < time*2 && x == true)
+       
+        int num = (actualplayerPosition.x-transform.position.x>=0) ? 1 : -1;
+        timer = 0;
+        while (timer < 8 && x == true)
         {
             timer += Time.deltaTime;
             
-                transform.position = Vector2.MoveTowards(transform.position, new Vector2(num*15, transform.position.y), 2*time * Time.deltaTime);
-            
-            
+                transform.position = Vector2.MoveTowards(transform.position, new Vector2(num*15, transform.position.y), (time + difficult/1.6f) * Time.deltaTime);
+
             yield return null;
         }
     }

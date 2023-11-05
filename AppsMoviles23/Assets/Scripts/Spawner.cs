@@ -5,8 +5,11 @@ using System;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject Crab, background;
+    public GameObject Crab, CrabY;
 
+    private GameObject background;
+
+    private Background _background;
     private CrabMove crabMove;
     private float AC = 0.1f;
 
@@ -15,6 +18,8 @@ public class Spawner : MonoBehaviour
     private float _bh, _bw;
     void Start()
     {
+        background = GameObject.FindGameObjectWithTag("Background");
+        _background = background.GetComponent<Background>();
         _bh = background.transform.localScale.y;
         _bw = background.transform.localScale.x;
     }
@@ -63,16 +68,16 @@ public class Spawner : MonoBehaviour
     {
         float timer = 0.0f;
         float cooldown = UnityEngine.Random.Range(0.5f, 1.2f);
-        float place = UnityEngine.Random.Range(-_bw/2, _bw/2);
+        float place = UnityEngine.Random.Range(0.4f, _bw/2);
 
         while (timer < time)
         {
             yield return new WaitForSeconds(cooldown);
 
-            GameObject Crab1 = Instantiate(Crab, new Vector2(place, transform.position.y), Quaternion.identity) as GameObject;
+            GameObject Crab1 = Instantiate(CrabY, new Vector2(place, transform.position.y), Quaternion.identity) as GameObject;
             CrabMove crabMove = Crab1.GetComponent<CrabMove>();
             crabMove.StartCoroutine(crabMove.SupportMove2());
-            GameObject Crab2 = Instantiate(Crab, new Vector2(-place, transform.position.y), Quaternion.identity) as GameObject;
+            GameObject Crab2 = Instantiate(CrabY, new Vector2(-place, transform.position.y), Quaternion.identity) as GameObject;
             CrabMove crabMove2 = Crab2.GetComponent<CrabMove>();
             crabMove2.StartCoroutine(crabMove2.SupportMove2());
 

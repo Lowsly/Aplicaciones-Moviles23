@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class AjusteBloqueo : MonoBehaviour
 {
-    public GameObject fondo; // Asigna el GameObject del fondo desde el Inspector
+    public GameObject bloque, fondo; 
+
 
     private void Start()
     {
@@ -13,12 +14,12 @@ public class AjusteBloqueo : MonoBehaviour
 
     private void AjustarFondo()
     {
-        // Calcula la relación de aspecto de la pantalla (ancho / alto)
+        bloque.transform.position = new Vector2(0, -fondo.transform.localScale.y/2*0.8f);
         float relacionDeAspectoPantalla = (float)Screen.width / Screen.height;
 
         
         float escala = relacionDeAspectoPantalla / 0.5f;
             
-            fondo.transform.localScale = new Vector3(escala*6f, escala*0.9f, 1.0f);
+            bloque.transform.localScale = new Vector3(escala*6.07f, escala*2f, 1.0f);
     }
 }

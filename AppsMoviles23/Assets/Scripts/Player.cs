@@ -16,7 +16,11 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI text;
     public AudioSource coinSound;
 
-    public Collider2D backgroundCollider, blockCollider;
+    public Collider2D backgroundCollider;
+    
+    public Collider2D[] blockCollider;
+
+    public GameObject[] block;
 
      private bool mouse_over = false;
 
@@ -35,12 +39,23 @@ bool isMousePressed = false;
 
         text.text = string.Format("dinero = {0}", _money);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
 
-        if (!UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject() && !EventSystem.current.IsPointerOverGameObject() && !mouse_over && Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition) && blockCollider.OverlapPoint(mousePosition) == false)
+        if (Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition))
         {
+            float distance1 = Mathf.Abs(block[0].transform.position.y-transform.position.y);
+            float distance2 = Mathf.Abs(block[1].transform.position.y-transform.position.y);
+            if(!blockCollider[0].OverlapPoint(mousePosition) && !blockCollider[1].OverlapPoint(mousePosition))
             transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed * Time.deltaTime);
+
+            else if(blockCollider[0].OverlapPoint(mousePosition) || mousePosition.y<=(block[0].transform.position.y+block[0].transform.localScale.y))
+            {
+                transform.position = Vector2.MoveTowards(transform.position, new Vector2(mousePosition.x,block[0].transform.position.y+block[0].transform.localScale.y/2), moveSpeed * Time.deltaTime);
+            }
+            
+            else if(blockCollider[1].OverlapPoint(mousePosition) || mousePosition.y<=(block[1].transform.position.y-block[1].transform.localScale.y))
+            {
+                transform.position = Vector2.MoveTowards(transform.position, new Vector2(mousePosition.x,block[1].transform.position.y-block[1].transform.localScale.y/2), moveSpeed * Time.deltaTime);
+            }
         }
         if (Input.GetMouseButton(0) == false)
         {
@@ -52,14 +67,6 @@ bool isMousePressed = false;
         
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
-    {
-        mouse_over = true;
-    }
-     public void OnPointerExit(PointerEventData eventData)
-    {
-        mouse_over = false;
-    }
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;

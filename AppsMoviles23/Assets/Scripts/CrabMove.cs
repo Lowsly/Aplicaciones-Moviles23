@@ -38,7 +38,7 @@ public class CrabMove : MonoBehaviour
             yield return null;
         }
         timer = 0;
-        while (timer < time)
+        while (timer < time*2)
         {
             transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,_bh-_bh*2.2f), (difficult + 2*time) * Time.deltaTime);
             timer += Time.deltaTime;

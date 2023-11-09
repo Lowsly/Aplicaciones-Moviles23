@@ -5,6 +5,8 @@ using UnityEngine;
 public class EnemyDefault : MonoBehaviour
 {
     public GameObject[] objectsToSpawn;
+
+    public GameObject explosion;
     public float moveSpeed;
 
     public int currentHealth = 100;
@@ -32,10 +34,8 @@ public class EnemyDefault : MonoBehaviour
 
 void Destroy()
 {
-    
     float totalProbability = 0f;
 
-    
     foreach (GameObject obj in objectsToSpawn)
     {
         Probability prob = obj.GetComponent<Probability>();
@@ -44,15 +44,13 @@ void Destroy()
             totalProbability += prob.appearanceProbability;
         }
     }
-
-    float randomValue = Random.Range(0f, 100f); // Usar rango de 0 a 100 para porcentajes
+    float randomValue = Random.Range(0f, 100f); 
 
     // Verificar si se selecciona la opción "nada"
     if (randomValue <= appearanceProbabilityOfNothing)
     {
-        // No hagas nada, simplemente destruye este objeto
         Destroy(this.gameObject);
-        return; // Salir de la función para evitar la instanciación de objetos
+        return;
     }
 
     foreach (GameObject obj in objectsToSpawn)
@@ -60,22 +58,18 @@ void Destroy()
         Probability prob = obj.GetComponent<Probability>();
         if (prob != null)
         {
-            // Verificar si el objeto debe aparecer
             if (randomValue <= prob.appearanceProbability)
             {
-                // Clonar el objeto
                 Instantiate(obj, transform.position, Quaternion.identity);
                 break;
             }
-
-            // Restar la probabilidad del objeto actual
             randomValue -= prob.appearanceProbability;
         }
     }
 
     Destroy(this.gameObject);
-}
-void Destroytotal()
+    }
+    void Destroytotal()
     {
         Destroy(this.gameObject);
     }
@@ -86,6 +80,7 @@ void Destroytotal()
         if (player != null)
         {
             player.TakeDamage(1);
+            Instantiate(explosion, transform.position, Quaternion.identity);
             Destroy(this.gameObject);
         }
     }

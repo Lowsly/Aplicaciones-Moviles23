@@ -17,6 +17,7 @@ public class CrabMove : MonoBehaviour
         _bw = background.transform.localScale.x;
         player = GameObject.FindGameObjectWithTag("Player");
         _background = background.GetComponent<Background>();
+        if  (player != null)
         playerPosition = player.transform.position;
     }
 
@@ -24,7 +25,8 @@ public class CrabMove : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         difficult = _background.difficulty;
-        actualplayerPosition = player.transform.position;
+        if  (player != null)
+            actualplayerPosition = player.transform.position;
     }
    public IEnumerator Move1()
     {

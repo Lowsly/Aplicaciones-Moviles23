@@ -6,23 +6,20 @@ public class Player : MonoBehaviour
 {
     public MainMenu mainMenu;
     public float moveSpeed; 
-
     public int currentHealth = 3;
+    public Image[] healthBars;
 
+    public Sprite fullBar, emptyBar;
+    public int maxHealth = 5; 
     private Rigidbody2D rb;
     private Vector3 playerPosition;
     private int _money;
-
     public TextMeshProUGUI text;
     public AudioSource coinSound;
-
     public Collider2D backgroundCollider;
-    
     public Collider2D[] blockCollider;
-
     public GameObject[] block;
-
-     private bool mouse_over = false;
+    private bool mouse_over = false;
 
 bool isMousePressed = false; 
 
@@ -33,6 +30,7 @@ bool isMousePressed = false;
         Application.targetFrameRate = 60;
         _money = 0;
         transform.position = new Vector2(transform.position.x, transform.position.y);
+        UpdateHealthUI();
     }
     private void Update()
     {
@@ -75,6 +73,7 @@ bool isMousePressed = false;
         {
             Destroy(gameObject);
         }
+        UpdateHealthUI();
     }
 
     public void Money(int cash)
@@ -85,5 +84,42 @@ bool isMousePressed = false;
         {
             coinSound.Play();
         }
+    }
+    void UpdateHealthUI()
+    {
+        for (int i = 0; i < healthBars.Length; i++)
+        {
+            if (i < maxHealth)
+            {
+                healthBars[i].enabled = true; // Activa la barra de vida
+            }
+            else
+            {
+                healthBars[i].enabled = false; // Desactiva barras de vida adicionales
+            }
+        }
+        for (int i = 0; i <maxHealth; i++)
+        {
+            if (i < currentHealth)
+            {
+                healthBars[i].sprite = fullBar; // Activa la barra de vida
+            }
+            else
+            {
+                healthBars[i].sprite = emptyBar; // Desactiva barras de vida adicionales
+            }
+        }
+    }
+     public void Heal(int healing)
+    {
+        currentHealth += healing;
+
+        if (currentHealth > maxHealth)
+        {
+            currentHealth = maxHealth;
+        }
+
+        // Actualiza las barras de vida
+        UpdateHealthUI();
     }
 }

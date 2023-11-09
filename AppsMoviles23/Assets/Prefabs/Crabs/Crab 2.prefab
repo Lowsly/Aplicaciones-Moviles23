@@ -298,6 +298,7 @@ MonoBehaviour:
   - {fileID: 9153425166591721342, guid: 4f2afedc8011e3942bda49b56f56a5ce, type: 3}
   - {fileID: 4902414579732444353, guid: 659485c8667c91445806d68a735de090, type: 3}
   - {fileID: 1427057664166945917, guid: a89079bd627b1044ba4331b0a00a6faa, type: 3}
+  explosion: {fileID: 4548114286095517229, guid: 43f1893a5c11d4f40b4691c8089634f6, type: 3}
   moveSpeed: 3
   currentHealth: 6
   luckFactor: 0

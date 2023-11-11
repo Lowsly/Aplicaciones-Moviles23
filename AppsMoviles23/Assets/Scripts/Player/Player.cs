@@ -2,6 +2,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
+using System.Collections;
 public class Player : MonoBehaviour
 {
     public MainMenu mainMenu;
@@ -18,8 +20,14 @@ public class Player : MonoBehaviour
     public AudioSource coinSound;
     public Collider2D backgroundCollider;
     public Collider2D[] blockCollider;
+
+    public GameObject background, player;
     public GameObject[] block;
-    private bool mouse_over = false;
+    private bool mouse_over = false; 
+    public bool _stunned, _immune, returning;
+
+    private Animator _animator;
+
 
 bool isMousePressed = false; 
 
@@ -29,8 +37,8 @@ bool isMousePressed = false;
         playerPosition = transform.position;
         Application.targetFrameRate = 60;
         _money = 0;
-        transform.position = new Vector2(transform.position.x, transform.position.y);
         UpdateHealthUI();
+        _animator = GetComponent<Animator>();
     }
     private void Update()
     {
@@ -38,7 +46,7 @@ bool isMousePressed = false;
         text.text = string.Format("dinero = {0}", _money);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition))
+        if (Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition) && !_stunned)
         {
             float distance1 = Mathf.Abs(block[0].transform.position.y-transform.position.y);
             float distance2 = Mathf.Abs(block[1].transform.position.y-transform.position.y);
@@ -55,25 +63,54 @@ bool isMousePressed = false;
                 transform.position = Vector2.MoveTowards(transform.position, new Vector2(mousePosition.x,block[1].transform.position.y-block[1].transform.localScale.y/2), moveSpeed * Time.deltaTime);
             }
         }
-        if (Input.GetMouseButton(0) == false)
+        if (Input.GetMouseButton(0) == false && !_stunned)
         {
             
             transform.position = new Vector2(transform.position.x, transform.position.y);
             
             
         }	
+        if (_stunned)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, -background.transform.localScale.y/1.8f), moveSpeed/4 * Time.deltaTime);
+        }
+        if (returning)
+        {
+            transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, moveSpeed/3 * Time.deltaTime);
+        }	
         
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
+        if(!_immune){
+            currentHealth -= damage;
+            UpdateHealthUI();
+            _animator.SetTrigger("Fall");
+            if (currentHealth <= 0)
+                Destroy(gameObject);
+                
 
-        if (currentHealth <= 0)
-        {
-            Destroy(gameObject);
         }
-        UpdateHealthUI();
+        
+    }
+
+    public void Stunned()
+    {
+		_stunned=!_stunned;
+    }
+
+    public void Returning()
+    {
+		returning =! returning;
+    }
+     public void Immune()
+    {
+        _immune=!_immune;
+        if (_immune == true){
+            player.layer = LayerMask.NameToLayer("Immune");}
+        else {
+            player.layer = LayerMask.NameToLayer("Player"); }
     }
 
     public void Money(int cash)

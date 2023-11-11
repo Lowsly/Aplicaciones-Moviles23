@@ -79,8 +79,12 @@ void Destroy()
         Player player = collision.gameObject.GetComponent<Player>();
         if (player != null)
         {
-            player.TakeDamage(1);
-            Instantiate(explosion, transform.position, Quaternion.identity);
+            if(!player._immune)
+            {
+                player.TakeDamage(1);
+                player.Immune();
+                Instantiate(explosion, transform.position, Quaternion.identity);
+            }
             Destroy(this.gameObject);
         }
     }

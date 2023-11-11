@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
 
     public Sprite fullBar, emptyBar;
     public int maxHealth = 5; 
-    private Rigidbody2D rb;
     private Vector3 playerPosition;
     private int _money;
     public TextMeshProUGUI text;
@@ -33,7 +32,6 @@ bool isMousePressed = false;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
         playerPosition = transform.position;
         Application.targetFrameRate = 60;
         _money = 0;
@@ -76,7 +74,7 @@ bool isMousePressed = false;
         }
         if (returning)
         {
-            transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, moveSpeed/3 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed/1.3f * Time.deltaTime);
         }	
         
     }

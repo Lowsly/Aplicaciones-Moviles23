@@ -69,7 +69,7 @@ void Destroy()
 
     Destroy(this.gameObject);
     }
-    void Destroytotal()
+    public void Destroytotal()
     {
         Destroy(this.gameObject);
     }

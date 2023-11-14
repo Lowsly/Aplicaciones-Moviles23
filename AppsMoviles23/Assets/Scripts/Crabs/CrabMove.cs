@@ -84,10 +84,10 @@ public class CrabMove : MonoBehaviour
         {
             timer += Time.deltaTime;
             float randomPos = Random.Range(0,10+difficult);
-        Vector2 actualPos = (randomPos<9) ? actualplayerPosition : playerPosition;
-                transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,-_bh*3.2f), (1.4f*time + difficult/2) * Time.deltaTime);
-                x = Mathf.Abs(transform.position.y - actualPos.y) <= random;
-                yield return null;
+            Vector2 actualPos = (randomPos<9) ? actualplayerPosition : playerPosition;
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x,-_bh*3.2f), (1.4f*time + difficult/2) * Time.deltaTime);
+            x = Mathf.Abs(transform.position.y - actualPos.y) <= random;
+            yield return null;
         }
        
         int num = (actualplayerPosition.x-transform.position.x>=0) ? 1 : -1;
@@ -95,9 +95,7 @@ public class CrabMove : MonoBehaviour
         while (timer < 8 && x == true)
         {
             timer += Time.deltaTime;
-            
-                transform.position = Vector2.MoveTowards(transform.position, new Vector2(num*15, transform.position.y), (time + difficult/1.6f) * Time.deltaTime);
-
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(num*15, transform.position.y), (time + difficult/1.6f) * Time.deltaTime);
             yield return null;
         }
     }

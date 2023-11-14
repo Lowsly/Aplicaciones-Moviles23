@@ -8,28 +8,29 @@ public class Player : MonoBehaviour
 {
     public MainMenu mainMenu;
     public float moveSpeed; 
-    public int currentHealth = 3;
+    private int currentHealth;
     public Image[] healthBars;
 
     public Sprite fullBar, emptyBar;
     public int maxHealth = 5; 
-    private Vector3 playerPosition;
     private int _money;
     public TextMeshProUGUI text;
     public AudioSource coinSound;
     public Collider2D backgroundCollider;
     public Collider2D[] blockCollider;
-    public GameObject background, player, energyShield;
-    public GameObject[] block;
-    private bool mouse_over = false; 
-    public bool _stunned, _immune, returning;
+    public GameObject background, player, energyShield, explosion, fire;
+    public GameObject[] block, blips;
+    public bool mouse_over = false, _stunned, _immune, returning, dead;
     private Animator _animator;
     public SpriteRenderer Energy;
-    bool isMousePressed = false; 
     public MainMenu menu;
+
+    void Awake()
+    {
+        currentHealth = maxHealth;
+    }
     private void Start()
     {
-        playerPosition = transform.position;
         Application.targetFrameRate = 60;
         _money = 0;
         UpdateHealthUI();
@@ -40,7 +41,7 @@ public class Player : MonoBehaviour
         text.text = string.Format("dinero = {0}", _money);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-        if (Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition) && !_stunned)
+        if (Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition) && !_stunned && !dead)
         {
             float distance1 = Mathf.Abs(block[0].transform.position.y-transform.position.y);
             float distance2 = Mathf.Abs(block[1].transform.position.y-transform.position.y);
@@ -84,9 +85,20 @@ public class Player : MonoBehaviour
         if(!_immune){
             currentHealth -= damage;
             UpdateHealthUI();
-            _animator.SetTrigger("Fall");
             if (currentHealth <= 0)
-                Destroy(gameObject);       
+            {
+                fire.SetActive(false);
+                dead = true;
+                player.layer = LayerMask.NameToLayer("Immune");
+                for (int i = 1; i < 5; i++)
+                {
+                    blips[i].SetActive(false);
+                }  
+                StartCoroutine(Death());
+                _animator.SetTrigger("Death");
+            }    
+            else 
+                _animator.SetTrigger("Fall");     
         }
     }
     public void Stunned()
@@ -101,10 +113,10 @@ public class Player : MonoBehaviour
      public void Immune()
     {
         _immune=!_immune;
-        if (_immune == true){
-            player.layer = LayerMask.NameToLayer("Immune");}
-        else {
-            player.layer = LayerMask.NameToLayer("Player"); }
+        if (_immune == true)
+            player.layer = LayerMask.NameToLayer("Immune");
+        else 
+            player.layer = LayerMask.NameToLayer("Player");
     }
 
     public void EnergyAct()
@@ -188,8 +200,27 @@ public class Player : MonoBehaviour
         {
             currentHealth = maxHealth;
         }
-
-        // Actualiza las barras de vida
         UpdateHealthUI();
     }
+    IEnumerator Death()
+    {
+        bool shake = true;
+        for(int i = 0; i < 7; i++){
+            shake=!shake;
+            float s = (shake == true) ? -0.05f : 0.05f;
+            transform.position = new Vector2(transform.position.x+s,transform.position.y);
+            float randomPosx = Random.Range(-transform.localScale.x/2,transform.localScale.x/2);
+            float randomPosy = Random.Range(-transform.localScale.y/2,transform.localScale.y/2);
+            float randomangle = Random.Range(0, 360);
+            float randomsize = Random.Range(0.65f, 1.25f);
+            GameObject xpl = Instantiate (explosion, new Vector2(transform.position.x + randomPosx,transform.position.y + randomPosy), Quaternion.Euler(0f, 0f, randomangle));
+		    xpl.transform.localScale *= randomsize;
+            yield return new WaitForSeconds(0.25f);
+        }
+        GameObject xpl2 = Instantiate (explosion, transform.position, Quaternion.identity);
+		xpl2.transform.localScale *= 2;
+        Destroy(gameObject);
+        yield return null;
+    }
+
 }

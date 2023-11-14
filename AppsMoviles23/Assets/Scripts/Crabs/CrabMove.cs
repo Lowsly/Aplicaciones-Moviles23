@@ -37,18 +37,14 @@ public class CrabMove : MonoBehaviour
     public void Away(Vector2 direccion)
     {
         StopAllCoroutines();
-
-rb.isKinematic = false;
-rb.mass = 0.1f;
-rb.constraints = RigidbodyConstraints2D.None;
-    float fuerza = 1f;
-    rb.AddForce(direccion * fuerza, ForceMode2D.Impulse);
+        rb.isKinematic = false;
+        rb.mass = 0.1f;
+        rb.constraints = RigidbodyConstraints2D.None;
+        float fuerza = 1f;
+        rb.AddForce(direccion * fuerza, ForceMode2D.Impulse);
     }
-
-
    public IEnumerator Move1()
     {
-   
         float time = 2f;
         float timer = time/3;
         while (timer < time)

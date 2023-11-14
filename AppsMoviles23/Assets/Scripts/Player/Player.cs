@@ -19,17 +19,14 @@ public class Player : MonoBehaviour
     public AudioSource coinSound;
     public Collider2D backgroundCollider;
     public Collider2D[] blockCollider;
-
-    public GameObject background, player;
+    public GameObject background, player, energyShield;
     public GameObject[] block;
     private bool mouse_over = false; 
     public bool _stunned, _immune, returning;
-
     private Animator _animator;
-
-
-bool isMousePressed = false; 
-
+    public SpriteRenderer Energy;
+    bool isMousePressed = false; 
+    public MainMenu menu;
     private void Start()
     {
         playerPosition = transform.position;
@@ -40,7 +37,6 @@ bool isMousePressed = false;
     }
     private void Update()
     {
-
         text.text = string.Format("dinero = {0}", _money);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
@@ -49,36 +45,40 @@ bool isMousePressed = false;
             float distance1 = Mathf.Abs(block[0].transform.position.y-transform.position.y);
             float distance2 = Mathf.Abs(block[1].transform.position.y-transform.position.y);
             if(!blockCollider[0].OverlapPoint(mousePosition) && !blockCollider[1].OverlapPoint(mousePosition))
-            transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed * Time.deltaTime);
-
+                transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed * Time.deltaTime);
             else if(blockCollider[0].OverlapPoint(mousePosition) || mousePosition.y<=(block[0].transform.position.y+block[0].transform.localScale.y))
             {
                 transform.position = Vector2.MoveTowards(transform.position, new Vector2(mousePosition.x,block[0].transform.position.y+block[0].transform.localScale.y/2), moveSpeed * Time.deltaTime);
             }
-            
+
             else if(blockCollider[1].OverlapPoint(mousePosition) || mousePosition.y<=(block[1].transform.position.y-block[1].transform.localScale.y))
             {
                 transform.position = Vector2.MoveTowards(transform.position, new Vector2(mousePosition.x,block[1].transform.position.y-block[1].transform.localScale.y/2), moveSpeed * Time.deltaTime);
             }
         }
+
         if (Input.GetMouseButton(0) == false && !_stunned)
         {
-            
-            transform.position = new Vector2(transform.position.x, transform.position.y);
-            
-            
+            transform.position = new Vector2(transform.position.x, transform.position.y);  
         }	
+
         if (_stunned)
         {
-            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, -background.transform.localScale.y/1.8f), moveSpeed/4 * Time.deltaTime);
+            transform.position = Vector2.MoveTowards(transform.position, new Vector2(transform.position.x, -background.transform.localScale.y/1.3f), moveSpeed/4 * Time.deltaTime);
         }
         if (returning)
         {
             transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed/1.3f * Time.deltaTime);
-        }	
-        
+        }    
+        if(transform.position.y>0+background.transform.localScale.y/10)
+        {
+            _animator.SetFloat("Speed", 1.5f);
+        }
+        else
+        {
+            _animator.SetFloat("Speed", 1f);
+        }
     }
-
     public void TakeDamage(int damage)
     {
         if(!_immune){
@@ -86,13 +86,9 @@ bool isMousePressed = false;
             UpdateHealthUI();
             _animator.SetTrigger("Fall");
             if (currentHealth <= 0)
-                Destroy(gameObject);
-                
-
+                Destroy(gameObject);       
         }
-        
     }
-
     public void Stunned()
     {
 		_stunned=!_stunned;
@@ -111,6 +107,10 @@ bool isMousePressed = false;
             player.layer = LayerMask.NameToLayer("Player"); }
     }
 
+    public void EnergyAct()
+    {
+        StartCoroutine(EnergyShield());
+    }
     public void Money(int cash)
     {
         _money+=cash;
@@ -144,6 +144,41 @@ bool isMousePressed = false;
                 healthBars[i].sprite = emptyBar; // Desactiva barras de vida adicionales
             }
         }
+    }
+
+    IEnumerator EnergyShield()
+    {
+        energyShield.SetActive(true); 
+        float timer = 0;
+        float time = 4;
+        yield return new WaitForSeconds(timer);
+        while (timer<time/2)
+        {
+            timer+=Time.deltaTime;
+            yield return null;
+        }
+        timer = 0;
+        while(timer<time/4)
+        {
+            float times;
+            if(timer<1)
+            { 
+                times = timer;
+            }
+            else
+            {
+                times = 1;
+            }
+            timer+=0.15f;
+            Energy.enabled = false;
+            yield return new WaitForSeconds(0.2f-times/10);
+            Energy.enabled = true;
+            yield return new WaitForSeconds(0.2f-times/10);
+        }
+        Energy.enabled = true;
+        energyShield.SetActive(false); 
+        Immune();
+        yield return null;
     }
      public void Heal(int healing)
     {

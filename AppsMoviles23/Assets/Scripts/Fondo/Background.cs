@@ -9,6 +9,7 @@ public class Background : MonoBehaviour
     private Material material;
     private float distance = 0.0f, _time=1, _timer=1;
     public float difficulty = 0; 
+    public Player player;
 
     void Start()
     {
@@ -16,8 +17,19 @@ public class Background : MonoBehaviour
     }
     void Update()
     {
-        offset+= Time.deltaTime * (scrollSpeed+difficulty)/10f;
-        distance += speed * Time.deltaTime;
+        if(player._stunned)
+        {
+            offset+= Time.deltaTime * (scrollSpeed+difficulty)/20f;
+            distance+= speed/2 * Time.deltaTime;
+            
+        }
+        else 
+        {
+            offset+= Time.deltaTime * (scrollSpeed+difficulty)/10f;
+            distance+= speed * Time.deltaTime;
+        }
+
+        
         int distanceInt = Mathf.RoundToInt(distance);
         material.SetTextureOffset("_MainTex", new Vector2(0,offset));
         if(Time.time > _time && difficulty<20){

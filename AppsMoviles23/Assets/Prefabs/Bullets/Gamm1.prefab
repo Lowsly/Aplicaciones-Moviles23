@@ -149,7 +149,7 @@ MonoBehaviour:
   livingTime: 0
   initialColor: {r: 1, g: 1, b: 1, a: 1}
   finalColor: {r: 0, g: 0, b: 0, a: 0}
-  damage: 4
+  damage: 10
 --- !u!95 &2236146154655071951
 Animator:
   serializedVersion: 4

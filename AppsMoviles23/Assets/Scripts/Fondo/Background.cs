@@ -7,9 +7,11 @@ public class Background : MonoBehaviour
     public float scrollSpeed, speed;
     private float offset;
     private Material material;
-    private float distance = 0.0f, _time=1, _timer=1, speed2 = 1;
+    private float distance = 0.0f, _time=1, _timer=1, speed2 = 1, GameOver=0;
     public float difficulty = 0; 
     public Player player;
+
+    public GameObject GameOverScreen, Spawn;
 
     void Start()
     {
@@ -19,9 +21,14 @@ public class Background : MonoBehaviour
     {
          if(player.dead)
         {
-            speed2+=Time.deltaTime*2.5f;
+            Spawn.SetActive(false);
+            speed2+=Time.deltaTime*4.5f;
             offset+= Time.deltaTime * (scrollSpeed+difficulty)/(10*speed2);
             distance+= speed/2 * Time.deltaTime;  
+            GameOver+=Time.deltaTime;
+            if(GameOver>1.82f)
+                GameOverScreen.SetActive(true);
+
         }
         if(player._stunned)
         {

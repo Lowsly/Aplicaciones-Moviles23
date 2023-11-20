@@ -303,6 +303,7 @@ MonoBehaviour:
   currentHealth: 6
   luckFactor: 0
   appearanceProbabilityOfNothing: 20
+  crabmove: {fileID: 8807037571507025153}
 --- !u!114 &8807037571507025153
 MonoBehaviour:
   m_ObjectHideFlags: 0

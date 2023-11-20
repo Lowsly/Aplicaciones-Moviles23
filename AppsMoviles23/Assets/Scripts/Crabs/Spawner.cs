@@ -1,35 +1,39 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 
 public class Spawner : MonoBehaviour
 {
     public GameObject Crab, CrabY;
-
     private GameObject background;
-
     private Background _background;
+    private Player player;
     private CrabMove crabMove;
     private float AC = 0.1f;
+    public GameManager game;
 
+    public Shooter shoot;
     private float[] time;
-
     private float _bh, _bw;
+    public int round;
     void Start()
     {
         background = GameObject.FindGameObjectWithTag("Background");
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         _background = background.GetComponent<Background>();
         _bh = background.transform.localScale.y;
         _bw = background.transform.localScale.x;
+        round = PlayerPrefs.GetInt("round", 0);
     }
     void Update()
     {
-        if(Time.time>AC)
+        if(Time.time>AC && !player.dead)
         {
-            System.Random random = new System.Random();
-            int randomNumber = random.Next(1, 4);
-            int resultado = (randomNumber <= 5) ? 10 : 20;
+            game.Save(round, player.currentHealth, player.maxHealth, shoot.power);
+            Debug.Log(round);
+            int randomNumber = Random.Range(1,4);
+            int resultado = (randomNumber <= 5) ? 2 : 2;
             AC = 3 + Time.time + resultado;
             if(randomNumber >= 5)
             {
@@ -45,7 +49,7 @@ public class Spawner : MonoBehaviour
     public IEnumerator P1(float time)
     {
         float timer = 0.0f;
-        float cooldown = UnityEngine.Random.Range(0.5f, 1.2f); 
+        float cooldown = Random.Range(0.5f,1.2f);
 
         while (timer < time)
         {
@@ -63,12 +67,13 @@ public class Spawner : MonoBehaviour
         {
             yield return new WaitForSeconds(time - timer);
         }
+        round++;
     }
     public IEnumerator S1(float time)
     {
         float timer = 0.0f;
-        float cooldown = UnityEngine.Random.Range(0.5f, 1.2f);
-        float place = UnityEngine.Random.Range(0.4f, _bw/2);
+        float cooldown = Random.Range(0.5f,1.2f);
+        float place = Random.Range(0.4f, _bw/2);
 
         while (timer < time)
         {

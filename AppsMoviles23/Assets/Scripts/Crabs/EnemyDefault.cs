@@ -15,10 +15,14 @@ public class EnemyDefault : MonoBehaviour
 
     public float appearanceProbabilityOfNothing = 20f;
 
+    private Animator _animator;
+
+    public CrabMove crabmove;
 
     void Start()
     {
         Invoke("Destroytotal",10.5f);
+        _animator = GetComponent<Animator>();
     }
 
    
@@ -34,6 +38,8 @@ public class EnemyDefault : MonoBehaviour
 
 void Destroy()
 {
+    crabmove.StopAllCoroutines();
+    this.gameObject.layer = LayerMask.NameToLayer("Crabless");
     float totalProbability = 0f;
 
     foreach (GameObject obj in objectsToSpawn)
@@ -49,7 +55,7 @@ void Destroy()
     // Verificar si se selecciona la opción "nada"
     if (randomValue <= appearanceProbabilityOfNothing)
     {
-        Destroy(this.gameObject);
+        _animator.SetTrigger("Death");
         return;
     }
 
@@ -67,7 +73,7 @@ void Destroy()
         }
     }
 
-    Destroy(this.gameObject);
+    _animator.SetTrigger("Death");
     }
     public void Destroytotal()
     {

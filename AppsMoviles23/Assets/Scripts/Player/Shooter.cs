@@ -15,12 +15,10 @@ public class Shooter : MonoBehaviour
 
     public int _bullets = 1, power = 1;
 
-    void Start()
+    void Awake()
     {
-        
+        power = PlayerPrefs.GetInt("power", 1);
     }
-
-    // Update is called once per frame
     void Update()
     {
         angleStep = 90f / (_bullets - 1); 

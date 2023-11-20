@@ -8,12 +8,10 @@ public class Player : MonoBehaviour
 {
     public MainMenu mainMenu;
     public float moveSpeed; 
-    private int currentHealth;
     public Image[] healthBars;
 
     public Sprite fullBar, emptyBar;
-    public int maxHealth = 5; 
-    private int _money;
+    public int maxHealth = 5, currentHealth, _money; 
     public TextMeshProUGUI text;
     public AudioSource coinSound;
     public Collider2D backgroundCollider;
@@ -23,11 +21,13 @@ public class Player : MonoBehaviour
     public bool mouse_over = false, _stunned, _immune, returning, dead;
     private Animator _animator;
     public SpriteRenderer Energy;
-    public MainMenu menu;
+    public Spawner spawner;
+    public GameManager game;
+    
 
     void Awake()
     {
-        currentHealth = maxHealth;
+        currentHealth = PlayerPrefs.GetInt("CH", maxHealth);
     }
     private void Start()
     {
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        text.text = string.Format("dinero = {0}", _money);
+        text.text = string.Format("Ronda = {0}", spawner.round);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         if (Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition) && !_stunned && !dead)
@@ -89,6 +89,7 @@ public class Player : MonoBehaviour
             {
                 fire.SetActive(false);
                 dead = true;
+                game.New();
                 player.layer = LayerMask.NameToLayer("Immune");
                 for (int i = 1; i < 5; i++)
                 {
@@ -205,7 +206,7 @@ public class Player : MonoBehaviour
     IEnumerator Death()
     {
         bool shake = true;
-        for(int i = 0; i < 7; i++){
+        for(int i = 0; i < 5; i++){
             shake=!shake;
             float s = (shake == true) ? -0.05f : 0.05f;
             transform.position = new Vector2(transform.position.x+s,transform.position.y);
@@ -215,8 +216,9 @@ public class Player : MonoBehaviour
             float randomsize = Random.Range(0.65f, 1.25f);
             GameObject xpl = Instantiate (explosion, new Vector2(transform.position.x + randomPosx,transform.position.y + randomPosy), Quaternion.Euler(0f, 0f, randomangle));
 		    xpl.transform.localScale *= randomsize;
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.22f);
         }
+        yield return new WaitForSeconds(0.25f);
         GameObject xpl2 = Instantiate (explosion, transform.position, Quaternion.identity);
 		xpl2.transform.localScale *= 2;
         Destroy(gameObject);

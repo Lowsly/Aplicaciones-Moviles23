@@ -12,6 +12,7 @@ public class CrabMove : MonoBehaviour
     private float _bh, _bw, difficult;
 
     private Rigidbody2D rb;
+
     void Start()
     {
         background = GameObject.FindGameObjectWithTag("Background");
@@ -22,7 +23,7 @@ public class CrabMove : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
         if  (player != null)
-        playerPosition = player.transform.position;
+            playerPosition = player.transform.position;
        
     }
 
@@ -42,7 +43,9 @@ public class CrabMove : MonoBehaviour
         rb.constraints = RigidbodyConstraints2D.None;
         float fuerza = 1f;
         rb.AddForce(direccion * fuerza, ForceMode2D.Impulse);
+        this.gameObject.layer = LayerMask.NameToLayer("Crabless");
     }
+
    public IEnumerator Move1()
     {
         float time = 2f;

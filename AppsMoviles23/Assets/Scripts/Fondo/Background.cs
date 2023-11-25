@@ -7,15 +7,18 @@ public class Background : MonoBehaviour
     public float scrollSpeed, speed;
     private float offset;
     private Material material;
-    private float distance = 0.0f, _time=1, _timer=1, speed2 = 1, GameOver=0;
+    public float distance = 0.0f, _time=1, _timer=5, speed2 = 1, GameOver=0;
     public float difficulty = 0; 
     public Player player;
 
     public GameObject GameOverScreen, Spawn;
 
+    public Spawner spawner;
+
     void Start()
     {
         material = GetComponent<Renderer>().material;
+        spawner = Spawn.GetComponent<Spawner>();
     }
     void Update()
     {
@@ -43,8 +46,9 @@ public class Background : MonoBehaviour
 
         int distanceInt = Mathf.RoundToInt(distance);
         material.SetTextureOffset("_MainTex", new Vector2(0,offset));
-        if(Time.time > _time && difficulty<20){
-            difficulty+=0.01f;
+        if(Time.time > _time && difficulty<20 && spawner!= null){
+            spawner.score+=  Mathf.RoundToInt(distance/10);
+            difficulty+=0.05f;
             _time = Time.time + _timer;
             //Debug.Log(difficulty);
         }

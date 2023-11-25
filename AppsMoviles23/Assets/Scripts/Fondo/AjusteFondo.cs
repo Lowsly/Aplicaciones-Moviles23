@@ -20,8 +20,8 @@ public class AjusteFondo : MonoBehaviour
             
         fondo.transform.localScale = new Vector3(escala*6.07f, escala*15f, 1.0f);
 
-        bloque[0].transform.localScale = new Vector3(escala*6.07f, escala*3f, 1.0f);
-        bloque[1].transform.localScale = new Vector3(escala*6.07f, escala*3f, 1.0f);
+        bloque[0].transform.localScale = new Vector3(escala*6.07f, escala*2.9f, 1.0f);
+        bloque[1].transform.localScale = new Vector3(escala*6.07f, escala*4.9f, 1.0f);
         
         //bloque.transform.position = new Vector2(0, -fondo.transform.localScale.y/2);
         /*if (relacionDeAspectoPantalla >= 0.405 && relacionDeAspectoPantalla < 0.5f)

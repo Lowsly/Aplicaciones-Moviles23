@@ -4,12 +4,13 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     int round = 0, mx;
-    public void Save(int round, int health, int mx, int power)
+    public void Save(int round, int health, int mx, int power, int score)
     {
         PlayerPrefs.SetInt("round", round);
         PlayerPrefs.SetInt("CH", health);
         PlayerPrefs.SetInt("MH", mx);
         PlayerPrefs.SetInt("power", power);
+        PlayerPrefs.SetInt("score", score);
         this.mx = mx;
     }
     public void Load()
@@ -21,5 +22,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerPrefs.SetInt("round", 0);
         PlayerPrefs.SetInt("CH", PlayerPrefs.GetInt("MH", 0));
+        PlayerPrefs.SetInt("power", 1);
+        PlayerPrefs.SetInt("score", 0);
     }
 }

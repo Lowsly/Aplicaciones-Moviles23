@@ -25,18 +25,9 @@ public class MainMenu : MonoBehaviour
 
     public void PauseGame()
     {
-        Time.timeScale = 0f; 
-        isPaused = true;
-        pauseMenu.SetActive(true); 
-        pauseButton.interactable = false;
-    }
-
-    public void ResumeGame()
-    {
-        Time.timeScale = 1f; 
-        isPaused = false;
-        pauseMenu.SetActive(false); 
-        pauseButton.interactable = true; 
+        isPaused =!isPaused;
+        Time.timeScale = (isPaused == true) ? 0 : 1; 
+        pauseMenu.SetActive(isPaused); 
     }
 
     public void Restart()

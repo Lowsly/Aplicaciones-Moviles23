@@ -9,7 +9,7 @@ public class EnemyDefault : MonoBehaviour
     public GameObject explosion;
     public float moveSpeed;
 
-    public int currentHealth = 100;
+    public float currentHealth;
 
     public float  luckFactor = 1;
 
@@ -18,11 +18,14 @@ public class EnemyDefault : MonoBehaviour
     private Animator _animator;
 
     public CrabMove crabmove;
+    
 
     void Start()
     {
         Invoke("Destroytotal",10.5f);
         _animator = GetComponent<Animator>();
+        Background bg = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
+        currentHealth+= bg.difficulty*2;
     }
 
    
@@ -77,6 +80,13 @@ void Destroy()
     }
     public void Destroytotal()
     {
+        Spawner spawn = GameObject.FindGameObjectWithTag("Spawner").GetComponent<Spawner>();
+        Background bg = GameObject.FindGameObjectWithTag("Background").GetComponent<Background>();
+        if(spawn!=null)
+        {
+            spawn.score+= Mathf.RoundToInt(10+bg.difficulty);
+            
+        }
         Destroy(this.gameObject);
     }
 

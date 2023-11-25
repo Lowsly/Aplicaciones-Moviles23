@@ -16,7 +16,7 @@ public class Spawner : MonoBehaviour
     public Shooter shoot;
     private float[] time;
     private float _bh, _bw;
-    public int round;
+    public int round, score;
     void Start()
     {
         background = GameObject.FindGameObjectWithTag("Background");
@@ -25,12 +25,14 @@ public class Spawner : MonoBehaviour
         _bh = background.transform.localScale.y;
         _bw = background.transform.localScale.x;
         round = PlayerPrefs.GetInt("round", 0);
+        score = PlayerPrefs.GetInt("score", 0);
     }
     void Update()
     {
+        ;
         if(Time.time>AC && !player.dead)
         {
-            game.Save(round, player.currentHealth, player.maxHealth, shoot.power);
+           ForceSave();
             Debug.Log(round);
             int randomNumber = Random.Range(1,4);
             int resultado = (randomNumber <= 5) ? 2 : 2;
@@ -45,6 +47,11 @@ public class Spawner : MonoBehaviour
                 StartCoroutine(S1(resultado));
             }
         }
+    }
+
+    public void ForceSave()
+    {
+        game.Save(round, player.currentHealth, player.maxHealth, shoot.power, score);
     }
     public IEnumerator P1(float time)
     {

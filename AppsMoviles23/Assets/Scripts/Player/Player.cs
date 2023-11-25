@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     public Collider2D[] blockCollider;
     public GameObject background, player, energyShield, explosion, fire;
     public GameObject[] block, blips;
-    public bool mouse_over = false, _stunned, _immune, returning, dead;
+    public bool mouse_over = false, _stunned, _immune, returning, dead, moved;
     private Animator _animator;
     public SpriteRenderer Energy;
     public Spawner spawner;
@@ -38,11 +38,12 @@ public class Player : MonoBehaviour
     }
     private void Update()
     {
-        text.text = string.Format("Ronda = {0}", spawner.round);
+        text.text = string.Format("{0}", spawner.score);
         Vector2 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
         if (Input.GetMouseButton(0) && EventSystem.current.currentSelectedGameObject == null && backgroundCollider.OverlapPoint(mousePosition) && !_stunned && !dead)
         {
+            moved = true;
             float distance1 = Mathf.Abs(block[0].transform.position.y-transform.position.y);
             float distance2 = Mathf.Abs(block[1].transform.position.y-transform.position.y);
             if(!blockCollider[0].OverlapPoint(mousePosition) && !blockCollider[1].OverlapPoint(mousePosition))
@@ -69,7 +70,10 @@ public class Player : MonoBehaviour
         }
         if (returning)
         {
-            transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed/1.3f * Time.deltaTime);
+            if(moved)
+                transform.position = Vector2.MoveTowards(transform.position, mousePosition, moveSpeed/1.3f * Time.deltaTime);
+            else 
+                transform.position = Vector2.MoveTowards(transform.position, Vector2.zero, moveSpeed/1.3f * Time.deltaTime);
         }    
         if(transform.position.y>0+background.transform.localScale.y/10)
         {
@@ -84,6 +88,7 @@ public class Player : MonoBehaviour
     {
         if(!_immune){
             currentHealth -= damage;
+            spawner.ForceSave();
             UpdateHealthUI();
             if (currentHealth <= 0)
             {
@@ -127,6 +132,7 @@ public class Player : MonoBehaviour
     public void Money(int cash)
     {
         _money+=cash;
+        spawner.score+=cash;
 
         if (coinSound != null)
         {
@@ -196,7 +202,7 @@ public class Player : MonoBehaviour
      public void Heal(int healing)
     {
         currentHealth += healing;
-
+        spawner.score += 10;
         if (currentHealth > maxHealth)
         {
             currentHealth = maxHealth;

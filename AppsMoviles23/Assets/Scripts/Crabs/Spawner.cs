@@ -29,13 +29,11 @@ public class Spawner : MonoBehaviour
     }
     void Update()
     {
-        ;
         if(Time.time>AC && !player.dead)
         {
-           ForceSave();
-            Debug.Log(round);
-            int randomNumber = Random.Range(1,4);
-            int resultado = (randomNumber <= 5) ? 2 : 2;
+            ForceSave();
+            float randomNumber = Random.Range(1,2+_background.difficulty);
+            float resultado = (randomNumber <= 2) ? 5 : 10;
             AC = 3 + Time.time + resultado;
             if(randomNumber >= 5)
             {

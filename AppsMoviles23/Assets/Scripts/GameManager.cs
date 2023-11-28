@@ -21,8 +21,9 @@ public class GameManager : MonoBehaviour
     public void New()
     {
         PlayerPrefs.SetInt("round", 0);
-        PlayerPrefs.SetInt("CH", PlayerPrefs.GetInt("MH", 0));
+        PlayerPrefs.SetInt("CH", PlayerPrefs.GetInt("MH", 3));
         PlayerPrefs.SetInt("power", 1);
         PlayerPrefs.SetInt("score", 0);
     }
 }
+
